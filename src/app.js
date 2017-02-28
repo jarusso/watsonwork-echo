@@ -47,6 +47,26 @@ export const echo = (appId, token) => (req, res) => {
         if(!err)
           log('Sent message to space %s', req.body.spaceId);
       });
+
+  if(req.body.content
+    // Tokenize the message text into individual words
+    .split(/[^A-Za-z0-9]+/)
+    // Look for the hello and hey words
+    .filter((word) => /^(shit|ass|fuck)$/i.test(word)).length)
+
+    // Send the echo message
+    send(req.body.spaceId,
+      util.format(
+        'Hey %s, did you say %s? Enough with the swearing!',
+        req.body.userName, req.body.content),
+      token(),
+      (err, res) => {
+        if(!err)
+          log('Sent message to space %s', req.body.spaceId);
+      });
+
+
+
 };
 
 // Send an app message to the conversation in a space
