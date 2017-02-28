@@ -24,48 +24,64 @@ export const echo = (appId, token) => (req, res) => {
 
   // Only handle message-created Webhook events, and ignore the app's
   // own messages
-  if(req.body.type !== 'message-created' || req.body.userId === appId)
+  //if(req.body.type !== 'message-created' || req.body.userId === appId)
+  //  return;
+  if(req.body.userId === appId)
     return;
 
-  log('Got a message %o', req.body);
 
-  // React to 'hello' or 'hey' keywords in the message and send an echo
-  // message back to the conversation in the originating space
-  if(req.body.content
-    // Tokenize the message text into individual words
-    .split(/[^A-Za-z0-9]+/)
-    // Look for the hello and hey words
-    .filter((word) => /^(hello|hey)$/i.test(word)).length)
+  if ( req.body.type == 'message-created' || req.body.type == 'message-annotation-added')
+  {
+	  log('received ' + req.body.type);	
 
-    // Send the echo message
-    send(req.body.spaceId,
-      util.format(
-        'Hey %s, did you say %s?',
-        req.body.userName, req.body.content),
-      token(),
-      (err, res) => {
-        if(!err)
-          log('Sent message to space %s', req.body.spaceId);
-      });
+  	if ( req.body.type == 'message-created')
+  	{
+	  log('Got a message %o', req.body);
 
-  if(req.body.content
-    // Tokenize the message text into individual words
-    .split(/[^A-Za-z0-9]+/)
-    // Look for the hello and hey words
-    .filter((word) => /^(shit|ass|fuck)$/i.test(word)).length)
+	  // React to 'hello' or 'hey' keywords in the message and send an echo
+	  // message back to the conversation in the originating space
+	  if(req.body.content
+	    // Tokenize the message text into individual words
+	    .split(/[^A-Za-z0-9]+/)
+	    // Look for the hello and hey words
+	    .filter((word) => /^(hello|hey)$/i.test(word)).length)
+	
+	    // Send the echo message
+	    send(req.body.spaceId,
+	      util.format(
+	        'Hey %s, did you say %s?',
+	        req.body.userName, req.body.content),
+	      token(),
+	      (err, res) => {
+	        if(!err)
+	          log('Sent message to space %s', req.body.spaceId);
+	      });
+	
+	  if(req.body.content
+	    // Tokenize the message text into individual words
+	    .split(/[^A-Za-z0-9]+/)
+	    // Look for the hello and hey words
+	    .filter((word) => /^(shit|ass|fuck)$/i.test(word)).length)
+	
+	    // Send the echo message
+	    send(req.body.spaceId,
+	      util.format(
+	        'Hey %s, did you say %s? Enough with the swearing!',
+	        req.body.userName, req.body.content),
+	      token(),
+	      (err, res) => {
+	        if(!err)
+	          log('Sent message to space %s', req.body.spaceId);
+	      });
+	}
+	else
+	{
+		// just log for now
+		log('Got an annotation %o', req.body);
+	}
+	
 
-    // Send the echo message
-    send(req.body.spaceId,
-      util.format(
-        'Hey %s, did you say %s? Enough with the swearing!',
-        req.body.userName, req.body.content),
-      token(),
-      (err, res) => {
-        if(!err)
-          log('Sent message to space %s', req.body.spaceId);
-      });
-
-
+	}
 
 };
 
@@ -204,4 +220,3 @@ if (require.main === module)
     }
     log('App started');
   });
-
