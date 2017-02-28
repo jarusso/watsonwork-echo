@@ -22,7 +22,7 @@ sample app a quick try, you can simply get it deployed to Bluemix straight
 from Github without even having to download it to your local development
 environment and build it yourself. Just click the button below:
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/watsonwork/watsonwork-echo&branch=master)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/jarusso/watsonwork-echo&branch=master)
 
 Once that's done, go to your
 [Bluemix Dashboard](https://console.ng.bluemix.net/dashboard/cf-apps). The
