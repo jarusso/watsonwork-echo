@@ -79,14 +79,55 @@ export const echo = (appId, token) => (req, res) => {
 	}
 	else
 	{
+		const accessToken = req.body.access_token;
+
+		const GraphQLOptions = {
+			"url": `api.watsonwork.ibm.com/graphql`,
+			"headers": {
+			    "Content-Type": "application/graphql",
+			    "x-graphql-view": "PUBLIC",
+			    "jwt": "${jwt}"
+			},
+			"method": "POST",
+			"body": ""
+		    };
+
+		    GraphQLOptions.headers.jwt = accessToken;
+		    var annotationType = req.body.annotationType;
+		    var annotationPayload = JSON.parse(req.body.annotationPayload);
+		    var messageId = annotationPayload.messageId;
+	    	    var memberId;	
+		
+		
+		
+		    GraphQLOptions.body = "{ message (id: \"" + messageId + "\") {createdBy { displayName id}}}";
+
+		    request(GraphQLOptions, function(err, response, graphqlbody) {
+
+		      if (!err && response.statusCode === 200) {
+			  const bodyParsed = JSON.parse(graphqlbody);
+			  var person = bodyParsed.data.message.createdBy;
+			  memberId = person.id;
+			  //memberName = person.displayName;
+			  //msgText = memberName + msgText;
+
+		      } else {
+			  console.log("ERROR: Can't retrieve " + GraphQLOptions.body + " status:" + response.statusCode);
+			  return;
+		      }
+		    }
+		
+		if (memberId !== APP_ID)
+		{
+		
 		log('Got an annotation %o', req.body);
     		//var jsonBody = JSON.parse(req.body);
 		//log('Parsed %o', jsonBody);
-    		var annotationType = req.body.annotationType;
+    		//var annotationType = req.body.annotationType;
 		log('Type --> ', annotationType);
 
 		
-		var annotationPayload = JSON.parse(req.body.annotationPayload);
+		//var annotationPayload = JSON.parse(req.body.annotationPayload);
 		//var payload = req.body.annotationPayload;
 		
 		log('Payload --> ', annotationPayload);
@@ -121,7 +162,11 @@ export const echo = (appId, token) => (req, res) => {
 			      });
 		      }
 */
-		
+		}
+		else
+		{
+			log('not processing annotation because it is from our own message ');	
+		}
 		
 	}
 	
@@ -130,6 +175,16 @@ export const echo = (appId, token) => (req, res) => {
 
 };
 
+// 
+ const request(authenticationOptions, function(err, response, authenticationBody) {
+
+    // If successful authentication, a 200 response code is returned
+    if (response.statusCode !== 200) {
+        // if our app can't authenticate then it must have been disabled.  Just return
+        console.log("ERROR: App can't authenticate");
+        return;
+    }
+	 
 // Send an app message to the conversation in a space
 const send = (spaceId, text, tok, cb) => {
   request.post(
