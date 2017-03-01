@@ -27,8 +27,10 @@ export const echo = (appId, token) => (req, res) => {
   //if(req.body.type !== 'message-created' || req.body.userId === appId)
   //  return;
   if(req.body.userId === appId)
+  {
+    log('ignoring since this message came from us ' + appId);	  
     return;
-
+  }
 
   if ( req.body.type == 'message-created' || req.body.type == 'message-annotation-added')
   {
