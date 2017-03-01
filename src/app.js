@@ -26,6 +26,7 @@ export const echo = (appId, token) => (req, res) => {
   // own messages
   //if(req.body.type !== 'message-created' || req.body.userId === appId)
   //  return;
+  log('######## USER ID: ' + req.body.userId + ' APP ID: ' + appId + '#######');	 	
   if(req.body.userId === appId)
   {
     log('ignoring since this message came from us ' + appId);	  
