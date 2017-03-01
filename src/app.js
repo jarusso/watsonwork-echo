@@ -79,9 +79,8 @@ export const echo = (appId, token) => (req, res) => {
 	}
 	else
 	{
-		const accessToken = req.body.access_token;
-
-		const GraphQLOptions = {
+	    const accessToken = req.body.access_token;
+	    const GraphQLOptions = {
 			"url": `api.watsonwork.ibm.com/graphql`,
 			"headers": {
 			    "Content-Type": "application/graphql",
@@ -92,33 +91,24 @@ export const echo = (appId, token) => (req, res) => {
 			"body": ""
 		    };
 
-		    GraphQLOptions.headers.jwt = accessToken;
-		    var annotationType = req.body.annotationType;
-		    var annotationPayload = JSON.parse(req.body.annotationPayload);
-		    var messageId = annotationPayload.messageId;
-	    	    var memberId;	
-		
-		
-		
-		    GraphQLOptions.body = "{ message (id: \"" + messageId + "\") {createdBy { displayName id}}}";
-
-		    request(GraphQLOptions, function(err, response, graphqlbody) {
-
+	    GraphQLOptions.headers.jwt = accessToken;
+	    var annotationType = req.body.annotationType;
+	    var annotationPayload = JSON.parse(req.body.annotationPayload);
+	    var messageId = annotationPayload.messageId;
+   	    var memberId;	
+	    GraphQLOptions.body = "{ message (id: \"" + messageId + "\") {createdBy { displayName id}}}";
+	    
+	    request(GraphQLOptions, function(err, response, graphqlbody) {
 		      if (!err && response.statusCode === 200) {
 			  const bodyParsed = JSON.parse(graphqlbody);
 			  var person = bodyParsed.data.message.createdBy;
 			  memberId = person.id;
-			  //memberName = person.displayName;
-			  //msgText = memberName + msgText;
-
 		      } else {
 			  console.log("ERROR: Can't retrieve " + GraphQLOptions.body + " status:" + response.statusCode);
 			  return;
 		      }
-		    }
-
 		
-		if (memberId !== APP_ID)
+		 if (memberId !== APP_ID)
 		{
 		
 		log('Got an annotation %o', req.body);
