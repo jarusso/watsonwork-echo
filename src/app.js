@@ -84,12 +84,16 @@ export const echo = (appId, token) => (req, res) => {
 
 		var payload = req.body.annotationPayload;
 		
+		log('Payload --> ', payload);
+		
 		    if ( annotationType == "message-nlp-docSentiment")
 		    {
+			    log('sentiment ');
 			    var docSentiment = payload.docSentiment;
+			    log('docSentiment --> ', docSentiment);
 				  send(req.body.spaceId,
 					util.format(
-				'type: ' + annotationType + ' watson sez this sounds : ' + docSentiment + ' confidence: ' + docSentiment.score,
+				'type: ' + annotationType + ' watson sez this sounds : ' + docSentiment.type + ' confidence: ' + docSentiment.score.toString(),
 				req.body.userName, req.body.content),
 			      token(),
 			      (err, res) => {
@@ -103,7 +107,7 @@ export const echo = (appId, token) => (req, res) => {
 			    var lens = payload.lens;
 				  send(req.body.spaceId,
 					util.format(
-				'type: ' + annotationType + ' watson sez this looks like a : ' + lens + ' confidence: ' + lens.score,
+				'type: ' + annotationType + ' watson sez this looks like a : ' + lens + ' confidence: ' + lens.score.toString(),
 				req.body.userName, req.body.content),
 			      token(),
 			      (err, res) => {
