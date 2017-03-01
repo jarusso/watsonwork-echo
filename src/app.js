@@ -82,14 +82,16 @@ export const echo = (appId, token) => (req, res) => {
     		var annotationType = req.body.annotationType;
 		log('Type --> ', annotationType);
 
-		var payload = req.body.annotationPayload;
 		
-		log('Payload --> ', payload);
+		var annotationPayload = JSON.parse(req.body.annotationPayload);
+		//var payload = req.body.annotationPayload;
+		
+		log('Payload --> ', annotationPayload);
 		
 		    if ( annotationType == "message-nlp-docSentiment")
 		    {
 			    log('sentiment ');
-			    var docSentiment = payload.docSentiment;
+			    var docSentiment = annotationPayload.docSentiment;
 			    log('docSentiment --> ', docSentiment.type);
 				  send(req.body.spaceId,
 					util.format(
@@ -102,7 +104,7 @@ export const echo = (appId, token) => (req, res) => {
 			      });
 		      }
 
-		    if ( annotationType == "message-focus")
+/*		    if ( annotationType == "message-focus")
 		    {
 			    var lens = payload.lens;
 				  send(req.body.spaceId,
@@ -115,7 +117,7 @@ export const echo = (appId, token) => (req, res) => {
 				  log('Sent message to space %s', req.body.spaceId);
 			      });
 		      }
-
+*/
 		
 		
 	}
