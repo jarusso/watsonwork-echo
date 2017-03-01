@@ -116,6 +116,7 @@ export const echo = (appId, token) => (req, res) => {
 			  return;
 		      }
 		    }
+
 		
 		if (memberId !== APP_ID)
 		{
@@ -166,7 +167,7 @@ export const echo = (appId, token) => (req, res) => {
 		else
 		{
 			log('not processing annotation because it is from our own message ');	
-		}
+		});
 		
 	}
 	
