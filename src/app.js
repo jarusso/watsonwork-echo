@@ -78,7 +78,9 @@ export const echo = (appId, token) => (req, res) => {
 	{
 		log('Got an annotation %o', req.body);
     		var jsonBody = JSON.parse(req.body);
+		log('Parsed %o', jsonBody);
     		var annotationType = jsonBody.annotationType;
+		log('Type %o', annotationType);
 
 		    if ( annotationType != "undefined")
 		    {
