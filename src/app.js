@@ -76,17 +76,23 @@ export const echo = (appId, token) => (req, res) => {
 	}
 	else
 	{
-		// just log for now
 		log('Got an annotation %o', req.body);
-		send(req.body.spaceId,
-	      		util.format(
-	        'type: ' + req.body.annotationtype + ' the rest: ' + req.body.annotationPayload,
-	        req.body.userName, req.body.content),
-	      token(),
-	      (err, res) => {
-	        if(!err)
-	          log('Sent message to space %s', req.body.spaceId);
-	      });
+    		var jsonBody = JSON.parse(req.body);
+    		var annotationType = jsonBody.annotationType;
+
+		    if ( annotationType != "undefined")
+		    {
+				  send(req.body.spaceId,
+					util.format(
+				'type: ' + annotationType,
+				req.body.userName, req.body.content),
+			      token(),
+			      (err, res) => {
+				if(!err)
+				  log('Sent message to space %s', req.body.spaceId);
+			      });
+		      }
+		
 		
 		
 	}
