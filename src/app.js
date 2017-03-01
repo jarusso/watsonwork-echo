@@ -93,7 +93,7 @@ export const echo = (appId, token) => (req, res) => {
 			    log('docSentiment --> ', docSentiment);
 				  send(req.body.spaceId,
 					util.format(
-				'type: ' + annotationType + ' watson sez this sounds : ' + docSentiment.type + ' confidence: ' + docSentiment.score.toString(),
+				'type: ' + annotationType + ' watson sez this sounds : ' + payload.type + ' confidence: ' + payload.score.toString(),
 				req.body.userName, req.body.content),
 			      token(),
 			      (err, res) => {
