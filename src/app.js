@@ -47,30 +47,16 @@ export const echo = (appId, token) => (req, res) => {
 	    // Tokenize the message text into individual words
 	    .split(/[^A-Za-z0-9]+/)
 	    // Look for the hello and hey words
-	    .filter((word) => /^(hello|hey)$/i.test(word)).length)
+	    .filter((word) => /^(hello|hey|yo)$/i.test(word)).length)
 	
+		  
+	    // get add-on statement
+	    var addOn = getStatement();	  
 	    // Send the echo message
 	    send(req.body.spaceId,
 	      util.format(
-	        'Hey %s, did you say %s?',
-	        req.body.userName, req.body.content),
-	      token(),
-	      (err, res) => {
-	        if(!err)
-	          log('Sent message to space %s', req.body.spaceId);
-	      });
-	
-	  if(req.body.content
-	    // Tokenize the message text into individual words
-	    .split(/[^A-Za-z0-9]+/)
-	    // Look for the hello and hey words
-	    .filter((word) => /^(shit|ass|fuck)$/i.test(word)).length)
-	
-	    // Send the echo message
-	    send(req.body.spaceId,
-	      util.format(
-	        'Hey %s, did you say %s? Enough with the swearing!',
-	        req.body.userName, req.body.content),
+	        'Hey %s, did you say %s?\n %s',
+	        req.body.userName, req.body.content, addOn),
 	      token(),
 	      (err, res) => {
 	        if(!err)
@@ -79,88 +65,22 @@ export const echo = (appId, token) => (req, res) => {
 	}
 	else
 	{
-	    const accessToken = req.body.access_token;
-	    const GraphQLOptions = {
-			"url": `api.watsonwork.ibm.com/graphql`,
-			"headers": {
-			    "Content-Type": "application/graphql",
-			    "x-graphql-view": "PUBLIC",
-			    "jwt": "${jwt}"
-			},
-			"method": "POST",
-			"body": ""
-		    };
-
-	    GraphQLOptions.headers.jwt = accessToken;
-	    var annotationType = req.body.annotationType;
-	    var annotationPayload = JSON.parse(req.body.annotationPayload);
-	    var messageId = annotationPayload.messageId;
-   	    var memberId;	
-	    GraphQLOptions.body = "{ message (id: \"" + messageId + "\") {createdBy { displayName id}}}";
-	    
-	    request(GraphQLOptions, function(err, response, graphqlbody) {
-		      if (!err && response.statusCode === 200) {
-			  const bodyParsed = JSON.parse(graphqlbody);
-			  var person = bodyParsed.data.message.createdBy;
-			  memberId = person.id;
-		      } else {
-			  console.log("ERROR: Can't retrieve " + GraphQLOptions.body + " status:" + response.statusCode);
-			  return;
-		      }
-		
-		 if (memberId !== APP_ID)
-		{
-		
-		log('Got an annotation %o', req.body);
-    		//var jsonBody = JSON.parse(req.body);
-		//log('Parsed %o', jsonBody);
-    		//var annotationType = req.body.annotationType;
-		log('Type --> ', annotationType);
-
-		
-		//var annotationPayload = JSON.parse(req.body.annotationPayload);
-		//var payload = req.body.annotationPayload;
-		
-		log('Payload --> ', annotationPayload);
-		
-		    if ( annotationType == "message-nlp-docSentiment")
-		    {
-			    log('sentiment ');
-			    var docSentiment = annotationPayload.docSentiment;
-			    log('docSentiment --> ', docSentiment.type);
-				  send(req.body.spaceId,
-					util.format(
-				'type: ' + annotationType + ' watson sez this sounds : ' + docSentiment.type + ' confidence: ' + docSentiment.score.toString(),
-				req.body.userName, req.body.content),
-			      token(),
-			      (err, res) => {
-				if(!err)
-				  log('Sent message to space %s', req.body.spaceId);
-			      });
-		      }
-
-/*		    if ( annotationType == "message-focus")
-		    {
-			    var lens = payload.lens;
-				  send(req.body.spaceId,
-					util.format(
-				'type: ' + annotationType + ' watson sez this looks like a : ' + lens + ' confidence: ' + lens.score.toString(),
-				req.body.userName, req.body.content),
-			      token(),
-			      (err, res) => {
-				if(!err)
-				  log('Sent message to space %s', req.body.spaceId);
-			      });
-		      }
-*/
-		}
-		else
-		{
-			log('not processing annotation because it is from our own message ');	
-		}		
-	    });
+		// nothing for now
 	}
 };
+	
+// Statement
+const statement = () => {
+   	var saying = [
+    		"When he drives a car off the lot, its price increases in value",
+    		"Once a rattlesnake bit him, after 5 days of excruciating pain, the snake finally died",
+    		"His feet don't get blisters, but his shoes do"
+   		];	
+	var high = saying.length - 1;
+	var low = 0;
+	var statement = saying( Math.floor(Math.random() * (high - low + 1) + low););
+	return statement;
+};	
 	 
 // Send an app message to the conversation in a space
 const send = (spaceId, text, tok, cb) => {
