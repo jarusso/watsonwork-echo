@@ -161,17 +161,6 @@ export const echo = (appId, token) => (req, res) => {
 	    });
 	}
 };
-
-// 
- const request = (authenticationOptions, function(err, response, authenticationBody) => {
-
-    // If successful authentication, a 200 response code is returned
-    if (response.statusCode !== 200) {
-        // if our app can't authenticate then it must have been disabled.  Just return
-        console.log("ERROR: App can't authenticate");
-        return;
-    }
-};
 	 
 // Send an app message to the conversation in a space
 const send = (spaceId, text, tok, cb) => {
