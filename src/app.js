@@ -24,64 +24,31 @@ export const echo = (appId, token) => (req, res) => {
 
   // Only handle message-created Webhook events, and ignore the app's
   // own messages
-  //if(req.body.type !== 'message-created' || req.body.userId === appId)
-  //  return;
-  log('######## USER ID: ' + req.body.userId + ' APP ID: ' + appId + '#######');	 	
-  if(req.body.userId === appId)
-  {
-    log('ignoring since this message came from us ' + appId);	  
+  if(req.body.type !== 'message-created' || req.body.userId === appId)
     return;
-  }
 
-  if ( req.body.type == 'message-created' || req.body.type == 'message-annotation-added')
-  {
-	  log('received ' + req.body.type);	
+  log('Got a message %o', req.body);
 
-  	if ( req.body.type == 'message-created')
-  	{
-	  log('Got a message %o', req.body);
+  // React to 'hello' or 'hey' keywords in the message and send an echo
+  // message back to the conversation in the originating space
+  if(req.body.content
+    // Tokenize the message text into individual words
+    .split(/[^A-Za-z0-9]+/)
+    // Look for the hello and hey words
+    .filter((word) => /^(hello|hey)$/i.test(word)).length)
 
-	  // React to 'hello' or 'hey' keywords in the message and send an echo
-	  // message back to the conversation in the originating space
-	  if(req.body.content
-	    // Tokenize the message text into individual words
-	    .split(/[^A-Za-z0-9]+/)
-	    // Look for the hello and hey words
-	    .filter((word) => /^(hello|hey|yo)$/i.test(word)).length)
-	
-		  
-	    // get add-on statement
-	    var addOn = getStatement();	  
-	    // Send the echo message
-	    send(req.body.spaceId,
-	      util.format(
-	        'Hey %s, did you say %s?\n %s',
-	        req.body.userName, req.body.content, addOn),
-	      token(),
-	      (err, res) => {
-	        if(!err)
-	          log('Sent message to space %s', req.body.spaceId);
-	      });
-	}
-	else
-	{
-		// nothing for now
-	}
+    // Send the echo message
+    send(req.body.spaceId,
+      util.format(
+        'Hey %s, did you say %s?',
+        req.body.userName, req.body.content),
+      token(),
+      (err, res) => {
+        if(!err)
+          log('Sent message to space %s', req.body.spaceId);
+      });
 };
-	
-// Statement
-const statement = () => {
-   	var saying = [
-    		"When he drives a car off the lot, its price increases in value",
-    		"Once a rattlesnake bit him, after 5 days of excruciating pain, the snake finally died",
-    		"His feet don't get blisters, but his shoes do"
-   		];	
-	var high = saying.length - 1;
-	var low = 0;
-	var statement = saying( Math.floor(Math.random() * (high - low + 1) + low));
-	return statement;
-};	
-	 
+
 // Send an app message to the conversation in a space
 const send = (spaceId, text, tok, cb) => {
   request.post(
@@ -104,9 +71,7 @@ const send = (spaceId, text, tok, cb) => {
           text: text,
 
           actor: {
-            name: 'from sample echo app',
-            avatar: 'https://avatars1.githubusercontent.com/u/22985179',
-            url: 'https://github.com/watsonwork/watsonwork-echo'
+            name: 'Sample echo app'
           }
         }]
       }
