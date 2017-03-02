@@ -52,6 +52,7 @@ export const echo = (appId, token) => (req, res) => {
 };
 
 const statement = () => {
+	
   var saying = [
     		"He gave his father 'the talk'",
 		"His passport requires no photograph",
