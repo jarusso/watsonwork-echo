@@ -157,13 +157,9 @@ export const echo = (appId, token) => (req, res) => {
 		else
 		{
 			log('not processing annotation because it is from our own message ');	
-		}
-		
-	});
-	
-
+		}		
+	    });
 	}
-
 };
 
 // 
