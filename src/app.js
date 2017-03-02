@@ -35,18 +35,33 @@ export const echo = (appId, token) => (req, res) => {
     // Tokenize the message text into individual words
     .split(/[^A-Za-z0-9]+/)
     // Look for the hello and hey words
-    .filter((word) => /^(hello|hey)$/i.test(word)).length)
+    .filter((word) => /^(hello|hey|yo)$/i.test(word)).length)
+    
+    var addOn = statement();
 
     // Send the echo message
     send(req.body.spaceId,
       util.format(
-        'Hey %s, did you say %s?',
-        req.body.userName, req.body.content),
+        'Hey %s, did you say %s? \n%s',
+        req.body.userName, req.body.content, addOn),
       token(),
       (err, res) => {
         if(!err)
           log('Sent message to space %s', req.body.spaceId);
       });
+};
+
+const statement = () => {
+  var saying = [
+    		"When he drives a car off the lot, its price increases in value",
+    		"Once a rattlesnake bit him, after 5 days of excruciating pain, the snake finally died",
+    		"His feet don't get blisters, but his shoes do"
+   		];	
+	//var high = saying.length - 1;
+	//var low = 0;
+	//var statement = saying( Math.floor(Math.random() * (high - low + 1) + low));
+	var statement = saying(0);
+  return statement;
 };
 
 // Send an app message to the conversation in a space
