@@ -57,10 +57,10 @@ const statement = () => {
     		"Once a rattlesnake bit him, after 5 days of excruciating pain, the snake finally died",
     		"His feet don't get blisters, but his shoes do"
    		];	
-	//var high = saying.length - 1;
-	//var low = 0;
-	//var statement = saying( Math.floor(Math.random() * (high - low + 1) + low));
-	var statement = saying[0];
+	var high = saying.length - 1;
+	var low = 0;
+	var statement = saying( Math.floor(Math.random() * (high - low + 1) + low));
+	//var statement = saying[0];
   return statement;
 };
 
