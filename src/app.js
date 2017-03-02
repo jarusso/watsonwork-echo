@@ -59,7 +59,7 @@ const statement = () => {
    		];	
 	var high = saying.length - 1;
 	var low = 0;
-	var statement = saying( Math.floor(Math.random() * (high - low + 1) + low));
+	var statement = saying[ Math.floor(Math.random() * (high - low + 1) + low)];
 	//var statement = saying[0];
   return statement;
 };
