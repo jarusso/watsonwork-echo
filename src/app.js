@@ -171,6 +171,7 @@ export const echo = (appId, token) => (req, res) => {
         console.log("ERROR: App can't authenticate");
         return;
     }
+};
 	 
 // Send an app message to the conversation in a space
 const send = (spaceId, text, tok, cb) => {
