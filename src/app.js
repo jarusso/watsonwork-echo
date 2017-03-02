@@ -163,7 +163,7 @@ export const echo = (appId, token) => (req, res) => {
 };
 
 // 
- const request(authenticationOptions, function(err, response, authenticationBody) {
+ const request = (authenticationOptions, function(err, response, authenticationBody) => {
 
     // If successful authentication, a 200 response code is returned
     if (response.statusCode !== 200) {
