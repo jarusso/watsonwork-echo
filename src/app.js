@@ -122,7 +122,7 @@ const statement = () => {
 		"Two countries went to war to dispute HIS nationality",
 		"When in Rome, they do as HE does",
 		"His pillow is cool on BOTH sides",
-		"The Nobel Academy was awarded a prize from HIM",
+		"The Nobel Academy was awarded a prize from him",
 		"While swimming off the coast of Australia, he once scratched the underbelly of the Great White with his right hand”,
 		"He taught Chuck Norris martial arts",
 		"Time waits on no one, but him",
