@@ -155,8 +155,8 @@ const statement = () => {
 		];	
 	var high = saying.length - 1;
 	var low = 0;
-	var statement = "By the way, did you know...\n " + saying[ Math.floor(Math.random() * (high - low + 1) + low)];
-	statement += "\n. He's the most interesting man in the world.";
+	var statement = "By the way, did you know?\n " + saying[ Math.floor(Math.random() * (high - low + 1) + low)];
+	statement += "\n He is the most interesting man in the world.";
 	//var statement = saying[0];
   return statement;
 };
