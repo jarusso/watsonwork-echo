@@ -111,7 +111,6 @@ const statement = () => {
 		"He once had an awkward moment, just to see how it feels",
 		"His beard alone has experienced more than a lesser man’s entire body",
 		"His blood smells like cologne",
-		"On every continent in the world, there is a sandwich named after him. His hands feel like rich brown suede”,
 		"Mosquitoes refuse to bite him purely out of respect",
 		"He is fluent in all languages, including three that he only speaks",
 		"Once while sailing around the world, he discovered a short cut",
